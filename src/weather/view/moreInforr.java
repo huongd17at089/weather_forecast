@@ -6,6 +6,17 @@
 package weather.view;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import org.json.JSONException;
+import weather.data.WeatherResponse;
+import weather.model.Forecast;
+import weather.model.Location;
 
 /**
  *
@@ -17,7 +28,11 @@ public class moreInforr extends javax.swing.JFrame {
      * Creates new form moreInforr
      */
     int X, Y;
-    public moreInforr() {
+    private Forecast f;
+    private ArrayList<Forecast> hourlyForecast;
+    private ArrayList<Forecast> daylyForecast;
+    private weather.data.WeatherResponse weatherResponse;
+    public moreInforr(Forecast f) {
         initComponents();
         setSize(768, 1024);
         setLocationRelativeTo(null);
@@ -49,6 +64,76 @@ public class moreInforr extends javax.swing.JFrame {
         btnExitNet.setBackground(new Color(0, 0, 0, 0));
         pnNetWorkErr.setBackground(new Color(0, 0, 0, 0));
         pnNetWorkErr.setVisible(false);
+        this.f = f;
+        Location l = f.getLocation();
+        txtDeg.setText(f.getTemp().get("current") + "°C");
+        txtHumidity.setText(f.getHumidity() + "%");
+        txtUV.setText(f.getUvi() + "nm");
+        txtWindSpeed.setText(f.getWind_speed() + "m/s");
+        weatherResponse = new WeatherResponse();
+        try {
+            hourlyForecast = weatherResponse.requestHourlyForecastByCoordinates(l);
+//            hourNow.setText(hourlyForecast.get(0).getDt().getHours() + ":00");
+            hour1H.setText(hourlyForecast.get(1).getDt().getHours()  + ":00");
+            hour2H.setText(hourlyForecast.get(2).getDt().getHours()  + ":00");
+            hour3H.setText(hourlyForecast.get(3).getDt().getHours()  + ":00");
+            hour4H.setText(hourlyForecast.get(4).getDt().getHours()  + ":00");
+            hour5H.setText(hourlyForecast.get(5).getDt().getHours()  + ":00");
+            
+            iconNow.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(0).getWeather().getIcon() + "_" + iconNow.getSize().width + ".png" ));
+            icon1H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(1).getWeather().getIcon() + "_" + icon1H.getSize().width + ".png" ));
+            icon2H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(2).getWeather().getIcon() + "_" + icon2H.getSize().width + ".png" ));
+            icon3H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(3).getWeather().getIcon() + "_" + icon3H.getSize().width + ".png" ));
+            icon4H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(4).getWeather().getIcon() + "_" + icon4H.getSize().width + ".png" ));
+            icon5H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(5).getWeather().getIcon() + "_" + icon5H.getSize().width + ".png" ));
+//            System.out.println("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(5).getWeather().getIcon() + "_" + icon5H.getSize().width + ".png");
+            tempNow.setText(hourlyForecast.get(0).getTemp().get("current") + "°C");
+            temp1H.setText(hourlyForecast.get(1).getTemp().get("current") + "°C");
+            temp2H.setText(hourlyForecast.get(2).getTemp().get("current") + "°C");
+            temp3H.setText(hourlyForecast.get(3).getTemp().get("current") + "°C");
+            temp4H.setText(hourlyForecast.get(4).getTemp().get("current") + "°C");
+            temp5H.setText(hourlyForecast.get(5).getTemp().get("current") + "°C");
+            
+            daylyForecast = weatherResponse.requestDailyForecastByCoordinates(l);
+            jIcon1.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(0).getWeather().getIcon() + "_" + jIcon1.getSize().width + ".png" ));
+            jIcon2.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(1).getWeather().getIcon() + "_" + jIcon2.getSize().width + ".png" ));
+            jIcon3.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(2).getWeather().getIcon() + "_" + jIcon3.getSize().width + ".png" ));
+            jIcon4.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(3).getWeather().getIcon() + "_" + jIcon4.getSize().width + ".png" ));
+            jIcon5.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(4).getWeather().getIcon() + "_" + jIcon5.getSize().width + ".png" ));
+            jIcon6.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(5).getWeather().getIcon() + "_" + jIcon6.getSize().width + ".png" ));
+            jIcon7.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(6).getWeather().getIcon() + "_" + jIcon7.getSize().width + ".png" ));
+            
+            jDeg1.setText(daylyForecast.get(0).getTemp().get("day") +"°C");
+            jDeg2.setText(daylyForecast.get(1).getTemp().get("day") +"°C");
+            jDeg3.setText(daylyForecast.get(2).getTemp().get("day") +"°C");
+            jDeg4.setText(daylyForecast.get(3).getTemp().get("day") +"°C");
+            jDeg5.setText(daylyForecast.get(4).getTemp().get("day") +"°C");
+            jDeg6.setText(daylyForecast.get(5).getTemp().get("day") +"°C");
+            jDeg7.setText(daylyForecast.get(6).getTemp().get("day") +"°C");
+            
+            SimpleDateFormat simpleDateformat = new SimpleDateFormat("E");
+            jDay1.setText(simpleDateformat.format(daylyForecast.get(0).getDt()));
+            jDay2.setText(simpleDateformat.format(daylyForecast.get(1).getDt()));
+            jDay3.setText(simpleDateformat.format(daylyForecast.get(2).getDt()));
+            jDay4.setText(simpleDateformat.format(daylyForecast.get(3).getDt()));
+            jDay5.setText(simpleDateformat.format(daylyForecast.get(4).getDt()));
+            jDay6.setText(simpleDateformat.format(daylyForecast.get(5).getDt()));
+            jDay7.setText(simpleDateformat.format(daylyForecast.get(6).getDt()));
+            
+            simpleDateformat = new SimpleDateFormat("E, dd MMM yyyy");
+            txtDate.setText(simpleDateformat.format(f.getDt()));
+            iconWeather.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + f.getWeather().getIcon() + "_" + iconWeather.getSize().width + ".png" ));
+        
+        
+        } catch (IOException ex) {
+            Logger.getLogger(moreInforr.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(moreInforr.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(moreInforr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
 
     /**
@@ -80,27 +165,27 @@ public class moreInforr extends javax.swing.JFrame {
         txtHumidity = new javax.swing.JLabel();
         txtUV = new javax.swing.JLabel();
         pn5H = new javax.swing.JPanel();
-        jLabel17 = new javax.swing.JLabel();
+        hour5H = new javax.swing.JLabel();
         icon5H = new javax.swing.JLabel();
         temp5H = new javax.swing.JLabel();
         pn4H = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
+        hour4H = new javax.swing.JLabel();
         icon4H = new javax.swing.JLabel();
         temp4H = new javax.swing.JLabel();
         pn3H = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
+        hour3H = new javax.swing.JLabel();
         icon3H = new javax.swing.JLabel();
         temp3H = new javax.swing.JLabel();
         pn2H = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
+        hour2H = new javax.swing.JLabel();
         icon2H = new javax.swing.JLabel();
         temp2H = new javax.swing.JLabel();
         pn1H = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
+        hour1H = new javax.swing.JLabel();
         icon1H = new javax.swing.JLabel();
         temp1H = new javax.swing.JLabel();
         pnNow = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        hourNow = new javax.swing.JLabel();
         iconNow = new javax.swing.JLabel();
         tempNow = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
@@ -173,7 +258,7 @@ public class moreInforr extends javax.swing.JFrame {
         getContentPane().add(btnBack);
         btnBack.setBounds(48, 31, 42, 42);
 
-        txtDate.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
+        txtDate.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
         txtDate.setForeground(new java.awt.Color(227, 110, 121));
         txtDate.setText("Weather Forecast");
         getContentPane().add(txtDate);
@@ -225,7 +310,7 @@ public class moreInforr extends javax.swing.JFrame {
         txtDeg.setForeground(new java.awt.Color(247, 138, 85));
         txtDeg.setText("33 C");
         getContentPane().add(txtDeg);
-        txtDeg.setBounds(644, 139, 74, 38);
+        txtDeg.setBounds(620, 140, 90, 38);
 
         lbWind.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
         lbWind.setForeground(new java.awt.Color(72, 86, 123));
@@ -278,12 +363,12 @@ public class moreInforr extends javax.swing.JFrame {
         pn5H.setBackground(new java.awt.Color(255, 255, 255));
         pn5H.setLayout(null);
 
-        jLabel17.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(46, 72, 89));
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel17.setText("17:00");
-        pn5H.add(jLabel17);
-        jLabel17.setBounds(0, 8, 80, 28);
+        hour5H.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
+        hour5H.setForeground(new java.awt.Color(46, 72, 89));
+        hour5H.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        hour5H.setText("17:00");
+        pn5H.add(hour5H);
+        hour5H.setBounds(0, 8, 80, 28);
 
         icon5H.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pn5H.add(icon5H);
@@ -302,12 +387,12 @@ public class moreInforr extends javax.swing.JFrame {
         pn4H.setBackground(new java.awt.Color(255, 255, 255));
         pn4H.setLayout(null);
 
-        jLabel14.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(46, 72, 89));
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("16:00");
-        pn4H.add(jLabel14);
-        jLabel14.setBounds(0, 8, 80, 28);
+        hour4H.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
+        hour4H.setForeground(new java.awt.Color(46, 72, 89));
+        hour4H.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        hour4H.setText("16:00");
+        pn4H.add(hour4H);
+        hour4H.setBounds(0, 8, 80, 28);
 
         icon4H.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pn4H.add(icon4H);
@@ -326,12 +411,12 @@ public class moreInforr extends javax.swing.JFrame {
         pn3H.setBackground(new java.awt.Color(255, 255, 255));
         pn3H.setLayout(null);
 
-        jLabel11.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(46, 72, 89));
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("15:00");
-        pn3H.add(jLabel11);
-        jLabel11.setBounds(0, 8, 80, 28);
+        hour3H.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
+        hour3H.setForeground(new java.awt.Color(46, 72, 89));
+        hour3H.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        hour3H.setText("15:00");
+        pn3H.add(hour3H);
+        hour3H.setBounds(0, 8, 80, 28);
 
         icon3H.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pn3H.add(icon3H);
@@ -350,12 +435,12 @@ public class moreInforr extends javax.swing.JFrame {
         pn2H.setBackground(new java.awt.Color(255, 255, 255));
         pn2H.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(46, 72, 89));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("14:00");
-        pn2H.add(jLabel8);
-        jLabel8.setBounds(0, 8, 80, 28);
+        hour2H.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
+        hour2H.setForeground(new java.awt.Color(46, 72, 89));
+        hour2H.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        hour2H.setText("14:00");
+        pn2H.add(hour2H);
+        hour2H.setBounds(0, 8, 80, 28);
 
         icon2H.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pn2H.add(icon2H);
@@ -374,12 +459,12 @@ public class moreInforr extends javax.swing.JFrame {
         pn1H.setBackground(new java.awt.Color(255, 255, 255));
         pn1H.setLayout(null);
 
-        jLabel5.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(46, 72, 89));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("13:00");
-        pn1H.add(jLabel5);
-        jLabel5.setBounds(0, 8, 80, 28);
+        hour1H.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
+        hour1H.setForeground(new java.awt.Color(46, 72, 89));
+        hour1H.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        hour1H.setText("13:00");
+        pn1H.add(hour1H);
+        hour1H.setBounds(0, 8, 80, 28);
 
         icon1H.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pn1H.add(icon1H);
@@ -398,12 +483,12 @@ public class moreInforr extends javax.swing.JFrame {
         pnNow.setBackground(new java.awt.Color(255, 255, 255));
         pnNow.setLayout(null);
 
-        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(46, 72, 89));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Now");
-        pnNow.add(jLabel1);
-        jLabel1.setBounds(15, 8, 51, 28);
+        hourNow.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
+        hourNow.setForeground(new java.awt.Color(46, 72, 89));
+        hourNow.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        hourNow.setText("Now");
+        pnNow.add(hourNow);
+        hourNow.setBounds(15, 8, 51, 28);
 
         iconNow.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pnNow.add(iconNow);
@@ -691,7 +776,7 @@ public class moreInforr extends javax.swing.JFrame {
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
 
         this.setVisible(false);
-        (new miniMain()).setVisible(true);
+        (new miniMain(f)).setVisible(true);
 
     }//GEN-LAST:event_btnCloseActionPerformed
 
@@ -805,37 +890,37 @@ public class moreInforr extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(moreInforr.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(moreInforr.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(moreInforr.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(moreInforr.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new moreInforr().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(moreInforr.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(moreInforr.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(moreInforr.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(moreInforr.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new moreInforr().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BG;
@@ -843,6 +928,12 @@ public class moreInforr extends javax.swing.JFrame {
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnExitNet;
     private javax.swing.JButton btnMinium;
+    private javax.swing.JLabel hour1H;
+    private javax.swing.JLabel hour2H;
+    private javax.swing.JLabel hour3H;
+    private javax.swing.JLabel hour4H;
+    private javax.swing.JLabel hour5H;
+    private javax.swing.JLabel hourNow;
     private javax.swing.JLabel icon1H;
     private javax.swing.JLabel icon2H;
     private javax.swing.JLabel icon3H;
@@ -878,14 +969,8 @@ public class moreInforr extends javax.swing.JFrame {
     private javax.swing.JLabel jIcon5;
     private javax.swing.JLabel jIcon6;
     private javax.swing.JLabel jIcon7;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JLabel lbHumidity;
     private javax.swing.JLabel lbIconDeg;

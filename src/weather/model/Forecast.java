@@ -21,7 +21,7 @@ public class Forecast {
     private String type;
     private Location location;
     private int dt;
-    private HashMap<String,Float> temp;
+    private HashMap<String,Integer> temp;
     private HashMap<String,Float> feels_like;
     private int pressure;
     private int humidity;
@@ -42,7 +42,7 @@ public class Forecast {
         wind_gust = 0;
     }
 
-    public Forecast(String type, Location location, int dt, HashMap<String,Float> temp, HashMap<String,Float> feels_like, int pressure, int humidity, float dew_point, int clouds, float uvi, int visibility, float wind_speed, float wind_gust, int wind_deg, float rain, float snow, Weather weather) {
+    public Forecast(String type, Location location, int dt, HashMap<String,Integer> temp, HashMap<String,Float> feels_like, int pressure, int humidity, float dew_point, int clouds, float uvi, int visibility, float wind_speed, float wind_gust, int wind_deg, float rain, float snow, Weather weather) {
         this.type = type;
         this.location = location;
         this.dt = dt;
@@ -98,11 +98,11 @@ public class Forecast {
         this.type = type;
     }
 
-    public HashMap<String,Float> getTemp() {
+    public HashMap<String,Integer> getTemp() {
         return temp;
     }
 
-    public void setTemp(HashMap<String,Float> temp) {
+    public void setTemp(HashMap<String,Integer> temp) {
         this.temp = temp;
     }
 

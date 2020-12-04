@@ -29,19 +29,19 @@ public class WeatherResponse {
     private Forecast setForecastFeature(JSONObject json) {
         Forecast f = new Forecast();
         f.setDt(json.optInt("dt"));
-        HashMap<String, Float> temp = new HashMap<String, Float>();
+        HashMap<String, Integer> temp = new HashMap<String, Integer>();
         if (json.optJSONObject("temp") != null) {
             JSONObject j = json.optJSONObject("temp");
-            temp.put("day", Float.parseFloat(j.opt("day").toString()));
-            temp.put("night", Float.parseFloat(j.opt("night").toString()));
-            temp.put("eve", Float.parseFloat(j.opt("eve").toString()));
-            temp.put("morn", Float.parseFloat(j.opt("morn").toString()));
-            temp.put("min", Float.parseFloat(j.opt("min").toString()));
-            temp.put("max", Float.parseFloat(j.opt("max").toString()));
+            temp.put("day", (int)Float.parseFloat(j.opt("day").toString()));
+            temp.put("night", (int)Float.parseFloat(j.opt("night").toString()));
+            temp.put("eve", (int)Float.parseFloat(j.opt("eve").toString()));
+            temp.put("morn", (int)Float.parseFloat(j.opt("morn").toString()));
+            temp.put("min", (int)Float.parseFloat(j.opt("min").toString()));
+            temp.put("max", (int)Float.parseFloat(j.opt("max").toString()));
 
         } else {
 
-            temp.put("current", Float.parseFloat(json.opt("temp").toString()));
+            temp.put("current", (int)Float.parseFloat(json.opt("temp").toString()));
         }
         f.setTemp(temp);
         f.setClouds(json.optInt("clouds"));
@@ -103,7 +103,7 @@ public class WeatherResponse {
 
     public Forecast requestCurrentForecastByCoordinates(Location location) throws IOException, JSONException {
         String q = "http://api.openweathermap.org/data/2.5/onecall?lat=" + location.getLat() + "&lon="
-                + location.getLon() + "&lang=" + lang + "&exclude=minutely,hourly,daily"
+                + location.getLon() + "&lang=" + lang + "&units=metric"+ "&exclude=minutely,hourly,daily"
                 + "&units" + unit + "&appid=" + openweathermapKey;
 
         String jsonString = JsonReader.readJsonString(q);
@@ -119,7 +119,7 @@ public class WeatherResponse {
 
     public ArrayList<Forecast> requestHourlyForecastByCoordinates(Location location) throws IOException, JSONException {
         String q = "http://api.openweathermap.org/data/2.5/onecall?lat=" + location.getLat() + "&lon="
-                + location.getLon() + "&lang=" + lang + "&exclude=current,minutely,daily"
+                + location.getLon() + "&lang=" + lang + "&units=metric" + "&exclude=current,minutely,daily"
                 + "&units" + unit + "&appid=" + openweathermapKey;
 
         String jsonString = JsonReader.readJsonString(q);
@@ -127,7 +127,7 @@ public class WeatherResponse {
         location.setTimeZone(json.getString("timezone"));
         JSONArray jso = json.optJSONArray("hourly");
         ArrayList<Forecast> list = new ArrayList<>();
-        int len = json.length();
+        int len = jso.length();
         for (int i = 0; i < len; i++) {
             Forecast f = setForecastFeature(jso.optJSONObject(i));
             f.setLocation(location);
@@ -139,7 +139,7 @@ public class WeatherResponse {
 
     public ArrayList<Forecast> requestDailyForecastByCoordinates(Location location) throws IOException, JSONException {
         String q = "http://api.openweathermap.org/data/2.5/onecall?lat=" + location.getLat() + "&lon="
-                + location.getLon() + "&lang=" + lang + "&exclude=current,minutely,hourly"
+                + location.getLon() + "&lang=" + lang + "&units=metric"+ "&exclude=current,minutely,hourly"
                 + "&units" + unit + "&appid=" + openweathermapKey;
 
         String jsonString = JsonReader.readJsonString(q);
@@ -148,7 +148,7 @@ public class WeatherResponse {
         location.setTimeZone(json.getString("timezone"));
         JSONArray jso = json.optJSONArray("daily");
         ArrayList<Forecast> list = new ArrayList<>();
-        int len = json.length();
+        int len = jso.length();
         for (int i = 0; i < len; i++) {
             Forecast f = setForecastFeature(jso.getJSONObject(i));
             f.setLocation(location);

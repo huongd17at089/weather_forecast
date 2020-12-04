@@ -38,6 +38,8 @@ public class NewClass {
         ArrayList<Forecast> list = new weather.data.WeatherResponse().requestDailyForecastByCoordinates(location);
         for( int i = 0; i < list.size(); i++)
             System.out.println(list.get(i));
+//Forecast f= new weather.data.WeatherResponse().re;
+//            System.out.println(f);
         } catch (IOException ex) {
 //            Logger.getLogger(NewClass.class.getName()).log(Level.SEVERE, null, ex);
 System.out.println("khong tim thay vi tri hoac k co mang");

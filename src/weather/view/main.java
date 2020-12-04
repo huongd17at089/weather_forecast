@@ -5,15 +5,18 @@
  */
 package weather.view;
 
-import java.awt.AWTException;
 import java.awt.Color;
-import java.awt.Frame;
-import java.awt.Image;
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+import org.json.JSONException;
+import weather.data.LocationResponse;
+import weather.data.WeatherResponse;
+import weather.model.Forecast;
+import weather.model.Location;
 
 /**
  *
@@ -24,6 +27,13 @@ public class main extends javax.swing.JFrame {
     /**
      * Creates new form main
      */
+    
+    private LocationResponse  locationResponse;
+    private weather.data.WeatherResponse weatherResponse;
+    private Forecast currentForecast;
+    private ArrayList<Forecast> hourlyForecast;
+    private Location location ;
+    private String ip;
 
     private int X,Y;
     public main() {
@@ -44,6 +54,47 @@ public class main extends javax.swing.JFrame {
         btnExitNet.setBackground(new Color(0, 0, 0, 0));
         pnNetWorkErr.setBackground(new Color(0, 0, 0, 0));
         pnNetWorkErr.setVisible(false);
+        
+        try {
+            ip = weather.data.GetIp.getExternalIpV4();
+            locationResponse = new LocationResponse();
+            location = locationResponse.getLocationByIp(ip);
+            weatherResponse = new WeatherResponse();
+            currentForecast = weatherResponse.requestCurrentForecastByCoordinates(location);
+            hourlyForecast = weatherResponse.requestHourlyForecastByCoordinates(location);
+//            System.out.println(currentForecast.getDt().getHours());
+            iconWeather.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + currentForecast.getWeather().getIcon() + "_" + iconWeather.getSize().width + ".png" ));
+            txtDeg.setText(currentForecast.getTemp().get("current") + "°C");
+            txtAdress.setText(location.getCity() + "," + location.getCountry());
+            //m co the for
+            System.out.println(hourlyForecast);
+            txtHour1st.setText(hourlyForecast.get(3).getDt().getHours() + ":00");
+            iconWeather1st.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(3).getWeather().getIcon() + "_" + iconWeather1st.getSize().width + ".png" ));
+            txtDeg1st.setText(hourlyForecast.get(3).getTemp().get("current") + "°C");
+//            System.out.println(txtHour2nd.getSize().width);
+            txtHour2nd.setText(hourlyForecast.get(6).getDt().getHours() + ":00");
+            iconWeather2nd.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(6).getWeather().getIcon() + "_" + iconWeather2nd.getSize().width + ".png" ));
+            txtDeg2nd.setText(hourlyForecast.get(6).getTemp().get("current") + "°C");
+            
+            txtHour3rd.setText(hourlyForecast.get(9).getDt().getHours() + ":00");
+            iconWeather3rd.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(9).getWeather().getIcon() + "_" + iconWeather3rd.getSize().width + ".png" ));
+            txtDeg3rd.setText(hourlyForecast.get(9).getTemp().get("current") + "°C");
+            
+            txtWinSpeed.setText(currentForecast.getWind_speed() + "m/s");
+            txtVisibility.setText(currentForecast.getVisibility() + "m");
+            Humidity.setText(currentForecast.getHumidity() + "%");
+            txtUV.setText(currentForecast.getUvi() + "nm");
+            
+        } catch (IOException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
     }
 
     /**
@@ -99,7 +150,7 @@ public class main extends javax.swing.JFrame {
         txtWinSpeed = new javax.swing.JLabel();
         txtVisibility = new javax.swing.JLabel();
         Humidity = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
+        txtUV = new javax.swing.JLabel();
         btnSeeMore = new javax.swing.JButton();
         BG = new javax.swing.JLabel();
 
@@ -423,12 +474,13 @@ public class main extends javax.swing.JFrame {
         getContentPane().add(Humidity);
         Humidity.setBounds(563, 816, 90, 28);
 
-        jLabel25.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(181, 98, 145));
-        jLabel25.setText("12Km");
-        getContentPane().add(jLabel25);
-        jLabel25.setBounds(563, 860, 90, 28);
+        txtUV.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 22)); // NOI18N
+        txtUV.setForeground(new java.awt.Color(181, 98, 145));
+        txtUV.setText("12Km");
+        getContentPane().add(txtUV);
+        txtUV.setBounds(563, 860, 90, 28);
 
+        btnSeeMore.setIcon(new javax.swing.ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\Asset 1.png")); // NOI18N
         btnSeeMore.setBorder(null);
         btnSeeMore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -459,7 +511,7 @@ public class main extends javax.swing.JFrame {
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
 
         this.setVisible(false);
-        (new miniMain()).setVisible(true);
+        (new miniMain(currentForecast)).setVisible(true);
 
     }//GEN-LAST:event_btnCloseActionPerformed
 
@@ -493,7 +545,7 @@ public class main extends javax.swing.JFrame {
 
     private void btnSeeMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeeMoreActionPerformed
         this.setVisible(false);
-        (new moreInforr()).setVisible(true);
+        (new moreInforr(currentForecast)).setVisible(true);
         
     }//GEN-LAST:event_btnSeeMoreActionPerformed
 
@@ -583,7 +635,6 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -607,6 +658,7 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JLabel txtHour3rd;
     private javax.swing.JLabel txtToday;
     private javax.swing.JLabel txtTomorrow;
+    private javax.swing.JLabel txtUV;
     private javax.swing.JLabel txtVisibility;
     private javax.swing.JLabel txtWinSpeed;
     // End of variables declaration//GEN-END:variables
