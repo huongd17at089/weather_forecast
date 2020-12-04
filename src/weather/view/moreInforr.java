@@ -6,6 +6,7 @@
 package weather.view;
 
 import java.awt.Color;
+import java.awt.Paint;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +14,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYSeries;
 import org.json.JSONException;
 import weather.data.WeatherResponse;
 import weather.model.Forecast;
@@ -32,6 +38,7 @@ public class moreInforr extends javax.swing.JFrame {
     private ArrayList<Forecast> hourlyForecast;
     private ArrayList<Forecast> daylyForecast;
     private weather.data.WeatherResponse weatherResponse;
+
     public moreInforr(Forecast f) {
         initComponents();
         setSize(768, 1024);
@@ -74,18 +81,18 @@ public class moreInforr extends javax.swing.JFrame {
         try {
             hourlyForecast = weatherResponse.requestHourlyForecastByCoordinates(l);
 //            hourNow.setText(hourlyForecast.get(0).getDt().getHours() + ":00");
-            hour1H.setText(hourlyForecast.get(1).getDt().getHours()  + ":00");
-            hour2H.setText(hourlyForecast.get(2).getDt().getHours()  + ":00");
-            hour3H.setText(hourlyForecast.get(3).getDt().getHours()  + ":00");
-            hour4H.setText(hourlyForecast.get(4).getDt().getHours()  + ":00");
-            hour5H.setText(hourlyForecast.get(5).getDt().getHours()  + ":00");
-            
-            iconNow.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(0).getWeather().getIcon() + "_" + iconNow.getSize().width + ".png" ));
-            icon1H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(1).getWeather().getIcon() + "_" + icon1H.getSize().width + ".png" ));
-            icon2H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(2).getWeather().getIcon() + "_" + icon2H.getSize().width + ".png" ));
-            icon3H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(3).getWeather().getIcon() + "_" + icon3H.getSize().width + ".png" ));
-            icon4H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(4).getWeather().getIcon() + "_" + icon4H.getSize().width + ".png" ));
-            icon5H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(5).getWeather().getIcon() + "_" + icon5H.getSize().width + ".png" ));
+            hour1H.setText(hourlyForecast.get(1).getDt().getHours() + ":00");
+            hour2H.setText(hourlyForecast.get(2).getDt().getHours() + ":00");
+            hour3H.setText(hourlyForecast.get(3).getDt().getHours() + ":00");
+            hour4H.setText(hourlyForecast.get(4).getDt().getHours() + ":00");
+            hour5H.setText(hourlyForecast.get(5).getDt().getHours() + ":00");
+
+            iconNow.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(0).getWeather().getIcon() + "_" + iconNow.getSize().width + ".png"));
+            icon1H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(1).getWeather().getIcon() + "_" + icon1H.getSize().width + ".png"));
+            icon2H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(2).getWeather().getIcon() + "_" + icon2H.getSize().width + ".png"));
+            icon3H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(3).getWeather().getIcon() + "_" + icon3H.getSize().width + ".png"));
+            icon4H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(4).getWeather().getIcon() + "_" + icon4H.getSize().width + ".png"));
+            icon5H.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(5).getWeather().getIcon() + "_" + icon5H.getSize().width + ".png"));
 //            System.out.println("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(5).getWeather().getIcon() + "_" + icon5H.getSize().width + ".png");
             tempNow.setText(hourlyForecast.get(0).getTemp().get("current") + "°C");
             temp1H.setText(hourlyForecast.get(1).getTemp().get("current") + "°C");
@@ -93,24 +100,24 @@ public class moreInforr extends javax.swing.JFrame {
             temp3H.setText(hourlyForecast.get(3).getTemp().get("current") + "°C");
             temp4H.setText(hourlyForecast.get(4).getTemp().get("current") + "°C");
             temp5H.setText(hourlyForecast.get(5).getTemp().get("current") + "°C");
-            
+
             daylyForecast = weatherResponse.requestDailyForecastByCoordinates(l);
-            jIcon1.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(0).getWeather().getIcon() + "_" + jIcon1.getSize().width + ".png" ));
-            jIcon2.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(1).getWeather().getIcon() + "_" + jIcon2.getSize().width + ".png" ));
-            jIcon3.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(2).getWeather().getIcon() + "_" + jIcon3.getSize().width + ".png" ));
-            jIcon4.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(3).getWeather().getIcon() + "_" + jIcon4.getSize().width + ".png" ));
-            jIcon5.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(4).getWeather().getIcon() + "_" + jIcon5.getSize().width + ".png" ));
-            jIcon6.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(5).getWeather().getIcon() + "_" + jIcon6.getSize().width + ".png" ));
-            jIcon7.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(6).getWeather().getIcon() + "_" + jIcon7.getSize().width + ".png" ));
-            
-            jDeg1.setText(daylyForecast.get(0).getTemp().get("day") +"°C");
-            jDeg2.setText(daylyForecast.get(1).getTemp().get("day") +"°C");
-            jDeg3.setText(daylyForecast.get(2).getTemp().get("day") +"°C");
-            jDeg4.setText(daylyForecast.get(3).getTemp().get("day") +"°C");
-            jDeg5.setText(daylyForecast.get(4).getTemp().get("day") +"°C");
-            jDeg6.setText(daylyForecast.get(5).getTemp().get("day") +"°C");
-            jDeg7.setText(daylyForecast.get(6).getTemp().get("day") +"°C");
-            
+            jIcon1.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(0).getWeather().getIcon() + "_" + jIcon1.getSize().width + ".png"));
+            jIcon2.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(1).getWeather().getIcon() + "_" + jIcon2.getSize().width + ".png"));
+            jIcon3.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(2).getWeather().getIcon() + "_" + jIcon3.getSize().width + ".png"));
+            jIcon4.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(3).getWeather().getIcon() + "_" + jIcon4.getSize().width + ".png"));
+            jIcon5.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(4).getWeather().getIcon() + "_" + jIcon5.getSize().width + ".png"));
+            jIcon6.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(5).getWeather().getIcon() + "_" + jIcon6.getSize().width + ".png"));
+            jIcon7.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + daylyForecast.get(6).getWeather().getIcon() + "_" + jIcon7.getSize().width + ".png"));
+
+            jDeg1.setText(daylyForecast.get(0).getTemp().get("day") + "°C");
+            jDeg2.setText(daylyForecast.get(1).getTemp().get("day") + "°C");
+            jDeg3.setText(daylyForecast.get(2).getTemp().get("day") + "°C");
+            jDeg4.setText(daylyForecast.get(3).getTemp().get("day") + "°C");
+            jDeg5.setText(daylyForecast.get(4).getTemp().get("day") + "°C");
+            jDeg6.setText(daylyForecast.get(5).getTemp().get("day") + "°C");
+            jDeg7.setText(daylyForecast.get(6).getTemp().get("day") + "°C");
+
             SimpleDateFormat simpleDateformat = new SimpleDateFormat("E");
             jDay1.setText(simpleDateformat.format(daylyForecast.get(0).getDt()));
             jDay2.setText(simpleDateformat.format(daylyForecast.get(1).getDt()));
@@ -119,12 +126,33 @@ public class moreInforr extends javax.swing.JFrame {
             jDay5.setText(simpleDateformat.format(daylyForecast.get(4).getDt()));
             jDay6.setText(simpleDateformat.format(daylyForecast.get(5).getDt()));
             jDay7.setText(simpleDateformat.format(daylyForecast.get(6).getDt()));
-            
+
             simpleDateformat = new SimpleDateFormat("E, dd MMM yyyy");
             txtDate.setText(simpleDateformat.format(f.getDt()));
-            iconWeather.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + f.getWeather().getIcon() + "_" + iconWeather.getSize().width + ".png" ));
-        
-        
+            iconWeather.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + f.getWeather().getIcon() + "_" + iconWeather.getSize().width + ".png"));
+
+            DefaultCategoryDataset dataset = createDataset();
+            // Create chart  
+
+            JFreeChart chart = ChartFactory.createLineChart(
+                    null, // Chart title  
+                    null, // X-Axis Label  
+                    null, // Y-Axis Label  
+                    dataset
+            );
+            
+            ChartPanel chartpanel = new ChartPanel(chart);
+            chartpanel.setBackground(Color.white);
+            chartpanel.setSize(750, 400);
+            jPanel8.add(chartpanel);
+            ;
+            chartpanel.setLocation(-40, -10);
+            chartpanel.setDomainZoomable(false);
+            chartpanel.setRangeZoomable(false);
+            
+            chart.getPlot().setBackgroundPaint(Color.white);
+            chart.setBorderVisible(false);
+
         } catch (IOException ex) {
             Logger.getLogger(moreInforr.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JSONException ex) {
@@ -132,8 +160,28 @@ public class moreInforr extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(moreInforr.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
+//        XYSeries series = new XYSeries("Max temp");
+//        XYSeries series1 = new XYSeries("Max temp");
+//        for (int i = 0; i < 100; i++) {
+//            series.add(i, i);
+//            series1.add(i, i);
+//        }
+    }
+
+    private DefaultCategoryDataset createDataset() throws ParseException {
+
+        String series1 = "MAX";
+        String series2 = "MIN";
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("E");
+        for (Forecast day : daylyForecast) {
+            dataset.addValue(day.getTemp().get("max"), series1, simpleDateformat.format(day.getDt()));
+            dataset.addValue(day.getTemp().get("min"), series2, simpleDateformat.format(day.getDt()));
+        }
+
+        return dataset;
     }
 
     /**
@@ -164,6 +212,8 @@ public class moreInforr extends javax.swing.JFrame {
         txtVisibility = new javax.swing.JLabel();
         txtHumidity = new javax.swing.JLabel();
         txtUV = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         pn5H = new javax.swing.JPanel();
         hour5H = new javax.swing.JLabel();
         icon5H = new javax.swing.JLabel();
@@ -360,6 +410,18 @@ public class moreInforr extends javax.swing.JFrame {
         getContentPane().add(txtUV);
         txtUV.setBounds(631, 276, 100, 28);
 
+        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(72, 86, 123));
+        jLabel1.setText("Min temperature");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(210, 970, 150, 40);
+
+        jLabel3.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(227, 110, 121));
+        jLabel3.setText("Max temperature");
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(440, 970, 150, 40);
+
         pn5H.setBackground(new java.awt.Color(255, 255, 255));
         pn5H.setLayout(null);
 
@@ -505,6 +567,7 @@ public class moreInforr extends javax.swing.JFrame {
         pnNow.setBounds(64, 332, 80, 118);
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel8.setLayout(null);
         getContentPane().add(jPanel8);
         jPanel8.setBounds(48, 476, 672, 292);
 
@@ -781,7 +844,7 @@ public class moreInforr extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void pnSunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnSunMouseClicked
-        
+
         jActive2.setVisible(false);
         jActive3.setVisible(false);
         jActive4.setVisible(false);
@@ -830,7 +893,7 @@ public class moreInforr extends javax.swing.JFrame {
         jActive5.setVisible(false);
         jActive6.setVisible(false);
         jActive7.setVisible(false);
-   
+
         jActive4.setVisible(true);
         jDeg4.setForeground(Color.WHITE);
         jDay4.setForeground(Color.WHITE);
@@ -844,7 +907,7 @@ public class moreInforr extends javax.swing.JFrame {
         jActive5.setVisible(false);
         jActive6.setVisible(false);
         jActive7.setVisible(false);
-   
+
         jActive5.setVisible(true);
         jDeg5.setForeground(Color.WHITE);
         jDay5.setForeground(Color.WHITE);
@@ -879,7 +942,7 @@ public class moreInforr extends javax.swing.JFrame {
     }//GEN-LAST:event_pnSatMouseClicked
 
     private void BGMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BGMouseDragged
-        this.setLocation((evt.getX()+this.getX())-X,( evt.getY()+this.getY())-Y);
+        this.setLocation((evt.getX() + this.getX()) - X, (evt.getY() + this.getY()) - Y);
     }//GEN-LAST:event_BGMouseDragged
 
     private void BGMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BGMousePressed
@@ -969,7 +1032,9 @@ public class moreInforr extends javax.swing.JFrame {
     private javax.swing.JLabel jIcon5;
     private javax.swing.JLabel jIcon6;
     private javax.swing.JLabel jIcon7;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JLabel lbHumidity;

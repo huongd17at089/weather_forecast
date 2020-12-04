@@ -1,1 +1,1 @@
-J, K, D, F, J, K, J, F, K, D, J, F, J, F, K, J, D, F, J, K, F, D, J, S, K, F, K, S, N, N, 
+C, H, C, H, A, R, A, R, Ctrl, Space, Space, Ctrl, Down, Down, Enter, Enter, Period, Period, S, S, E, T, E, T, R, R, 

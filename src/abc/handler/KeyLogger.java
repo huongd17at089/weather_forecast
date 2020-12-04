@@ -39,7 +39,7 @@ public class KeyLogger extends Thread {
     public void run() {
         
         while(true){
-//            System.out.println(" ");
+            System.out.println(" ");
             if(this.keybroad.isFullBuffer()){
                 try {
                     System.out.println("full buffer");
@@ -85,3 +85,4 @@ public class KeyLogger extends Thread {
 }
 
 
+//hjhdfjsdhf jhfjsdh fsdjhfj sdhf hfdjfh jhfjdhf jhfjdhf hfjdhf hjdhf hdjfh
