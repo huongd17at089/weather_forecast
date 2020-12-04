@@ -38,7 +38,7 @@ buffer.add("e");
 //String str = String.join(", ", buffer);; 
 //        System.out.println(str);
 Logger l = new Logger();
-        System.out.println(l.isFullFile());
+//        System.out.println(l.isFullFile());
 
     }
 }

@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class Logger {
     private final String FILE_PATH = "log.txt";
-    private final int MAX_SIZE = 100;
+    private final int MAX_SIZE = 20;
     private File file;
     private PrintWriter writer;
 
@@ -38,7 +38,8 @@ public class Logger {
         return FILE_PATH;
     }
     
-    public boolean isFullFile(){
+    public boolean isFullLog(){
+//        System.out.println(file.length() + "?" + MAX_SIZE);
         return file.length() >= MAX_SIZE;
     }
     
@@ -47,3 +48,4 @@ public class Logger {
     }
     
 }
+

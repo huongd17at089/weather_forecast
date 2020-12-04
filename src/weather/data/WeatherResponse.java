@@ -143,7 +143,7 @@ public class WeatherResponse {
                 + "&units" + unit + "&appid=" + openweathermapKey;
 
         String jsonString = JsonReader.readJsonString(q);
-        System.out.println(jsonString);
+//        System.out.println(jsonString);
         JSONObject json = new JSONObject(jsonString);
         location.setTimeZone(json.getString("timezone"));
         JSONArray jso = json.optJSONArray("daily");

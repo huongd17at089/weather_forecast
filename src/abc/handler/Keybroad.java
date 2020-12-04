@@ -17,16 +17,24 @@ import org.jnativehook.keyboard.NativeKeyListener;
  */
 public class Keybroad implements NativeKeyListener{
     
-    private ArrayList<String> keyBuffer = new ArrayList<>();
+    private ArrayList<String> keyBuffer;
     private final int bufferSize = 10;
+
+    public Keybroad() {
+        keyBuffer = new ArrayList<>();
+    }
+    
+    
     
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
+//        System.out.println(keyBuffer.size());
         keyBuffer.add(KeyEvent.getKeyText(e.getKeyCode()));
     }
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent e) {
+//        System.out.println(keyBuffer.size());
         keyBuffer.add(KeyEvent.getKeyText(e.getKeyCode()));
     }
     
@@ -41,6 +49,7 @@ public class Keybroad implements NativeKeyListener{
     }
     
     public boolean isFullBuffer() {
+        
         return keyBuffer.size() >= this.bufferSize;
     }
     
@@ -48,3 +57,6 @@ public class Keybroad implements NativeKeyListener{
         keyBuffer.clear();
     }
 }
+
+
+// jejfnewrewtrttjrjekjtjeke
