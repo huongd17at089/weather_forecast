@@ -5,8 +5,8 @@
  */
 package weather.view;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Paint;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,8 +17,9 @@ import javax.swing.ImageIcon;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.xy.XYSeries;
 import org.json.JSONException;
 import weather.data.WeatherResponse;
 import weather.model.Forecast;
@@ -140,16 +141,21 @@ public class moreInforr extends javax.swing.JFrame {
                     null, // Y-Axis Label  
                     dataset
             );
-            
+
             ChartPanel chartpanel = new ChartPanel(chart);
             chartpanel.setBackground(Color.white);
             chartpanel.setSize(750, 400);
+            CategoryPlot categoryPlot = chart.getCategoryPlot();
+            CategoryItemRenderer cir = categoryPlot.getRenderer();
+            cir.setSeriesStroke(1, new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            cir.setSeriesStroke(0, new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            cir.setSeriesPaint(1, new Color(72,86,123));
+                cir.setSeriesPaint(0, new Color(227,110,121));
             jPanel8.add(chartpanel);
-            ;
-            chartpanel.setLocation(-40, -10);
+            chartpanel.setLocation(-40, 20);
             chartpanel.setDomainZoomable(false);
             chartpanel.setRangeZoomable(false);
-            
+            chart.getPlot().setOutlinePaint(null);
             chart.getPlot().setBackgroundPaint(Color.white);
             chart.setBorderVisible(false);
 

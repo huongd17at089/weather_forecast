@@ -31,7 +31,7 @@ public class NewClass {
 //            weather.model.Location location = new Location("hanoi", "vietnam");
 //            new weather.data.LocationResponse().setCoordinatesByAddress(location);
 //            System.out.println(location.getLat());
-        weather.model.Location location = new Location("hà nộgdfghgfhi", "việdvxdfvft nam");
+        weather.model.Location location = new Location("ha noi", "");
         try {
             new weather.data.LocationResponse().setCoordinatesByAddress(location);
             System.out.println(location);

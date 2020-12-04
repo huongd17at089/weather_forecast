@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -57,14 +58,27 @@ public class main extends javax.swing.JFrame {
         btnExitNet.setBackground(new Color(0, 0, 0, 0));
         pnNetWorkErr.setBackground(new Color(0, 0, 0, 0));
         pnNetWorkErr.setVisible(false);
-
+        
+        weatherResponse = new WeatherResponse();
+        locationResponse = new LocationResponse();
         try {
             ip = weather.data.GetIp.getExternalIpV4();
-            locationResponse = new LocationResponse();
             location = locationResponse.getLocationByIp(ip);
-            weatherResponse = new WeatherResponse();
-            currentForecast = weatherResponse.requestCurrentForecastByCoordinates(location);
-            hourlyForecast = weatherResponse.requestHourlyForecastByCoordinates(location);
+            update(location);
+        } catch (IOException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }
+    
+    private void update(Location l) throws IOException, JSONException, ParseException{
+            currentForecast = weatherResponse.requestCurrentForecastByCoordinates(l);
+            hourlyForecast = weatherResponse.requestHourlyForecastByCoordinates(l);
 //            System.out.println(currentForecast.getDt().getHours());
             iconWeather.setIcon(new ImageIcon("C:\\Users\\Huong\\Documents\\NetBeansProjects\\Weather\\pic\\" + currentForecast.getWeather().getIcon() + "_" + iconWeather.getSize().width + ".png"));
             txtDeg.setText(currentForecast.getTemp().get("current") + "°C");
@@ -87,15 +101,6 @@ public class main extends javax.swing.JFrame {
             txtVisibility.setText(currentForecast.getVisibility() + "m");
             Humidity.setText(currentForecast.getHumidity() + "%");
             txtUV.setText(currentForecast.getUvi() + "nm");
-
-        } catch (IOException ex) {
-            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSONException ex) {
-            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     /**
@@ -564,6 +569,22 @@ public class main extends javax.swing.JFrame {
         } else {
             pnSearch.setVisible(false);
             btnChooseCountry.setVisible(true);
+            String adress = txtCountryName.getText();
+            System.out.println(adress);
+            String[] split = adress.split("[, ]");
+            location = new Location(split[split.length-1], split[split.length-2]);
+            try {
+                locationResponse.setCoordinatesByAddress(location);
+                update(location);
+            } catch (IOException ex) {
+                Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (JSONException ex) {
+                Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
         }
 
     }//GEN-LAST:event_btnSearchActionPerformed
